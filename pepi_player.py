@@ -1,12 +1,13 @@
 #!/usr/bin/env python3.6
-""" pepi_player.
+""" pepi_player. Reproduce a list of videos from youtube using a query string
 
 Usage:
-    pepi-player [-h] [-r] [--loop] <query>
+    pepi-player [-h] [-r] [-f] [--loop] <query>
 
 Options:
     -h --help       Show this screen.
-    -r --random     Reproduce random videos from <query> search.
+    -r --random     Shuffle list.
+    -f --first      Reproduce first video from list.
     --loop          Reproduce in loop
 """
 
@@ -45,19 +46,19 @@ def play_video(video_id):
     subprocess.run(player_command)
 
 
-def shuffle(_list):
-    return sorted(_list, key=lambda k: random.random())
-
-
 def main():
     arguments = docopt.docopt(__doc__)
     video_ids = search_video(arguments['<query>'])
+
     if arguments['--random']:
         random.shuffle(video_ids)
-        for video_id in shuffle(video_ids):
-            play_video(video_id)
-    else:
+
+    if arguments['--first']:
         play_video(video_ids[0])
+        exit
+
+    for video_id in video_ids:
+        play_video(video_id)
 
     if arguments['--loop']:
         main()
