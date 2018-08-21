@@ -2,11 +2,12 @@
 """ pepi_player.
 
 Usage:
-    pepi-player [-h] [-r] <query>
+    pepi-player [-h] [-r] [--loop] <query>
 
 Options:
     -h --help       Show this screen.
     -r --random     Reproduce random videos from <query> search.
+    --loop          Reproduce in loop
 """
 
 import docopt
@@ -51,6 +52,9 @@ def main():
             play_video(video_id)
     else:
         play_video(video_ids[0])
+
+    if arguments['--loop']:
+        main()
 
 
 if __name__ == "__main__":
