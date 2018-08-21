@@ -38,8 +38,9 @@ def play_video(video_id):
     pathlib.Path(TMP_DIRECTORY).mkdir(parents=True, exist_ok=True)
 
     yt = pytube.YouTube(video_url)
-    video_path = f"{TMP_DIRECTORY}/{yt.title}.{VIDEO_FORMAT}"
-    yt.streams.filter(subtype=VIDEO_FORMAT).first().download(TMP_DIRECTORY, video_path)
+    filename = pytube.helpers.safe_filename(yt.title)
+    yt.streams.filter(subtype=VIDEO_FORMAT).first().download(TMP_DIRECTORY, filename)
+    video_path = f"{TMP_DIRECTORY}/{filename}.{VIDEO_FORMAT}"
     player_command = VIDEO_PLAYER_COMMAND.split(' ') + [video_path]
     subprocess.run(player_command)
 
