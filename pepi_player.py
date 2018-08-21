@@ -22,7 +22,7 @@ import urllib.request
 
 YOUTUBE_URL = "http://www.youtube.com"
 VIDEO_FORMAT = "mp4"
-VIDEO_PLAYER_COMMAND = "omxplayer -n -1"
+VIDEO_PLAYER_COMMAND = "omxplayer --aspect-mode fill -n -1"
 TMP_DIRECTORY = '/tmp/pepi_video'
 
 
@@ -38,8 +38,8 @@ def play_video(video_id):
     pathlib.Path(TMP_DIRECTORY).mkdir(parents=True, exist_ok=True)
 
     yt = pytube.YouTube(video_url)
-    yt.streams.filter(subtype=VIDEO_FORMAT).first().download(TMP_DIRECTORY)
     video_path = f"{TMP_DIRECTORY}/{yt.title}.{VIDEO_FORMAT}"
+    yt.streams.filter(subtype=VIDEO_FORMAT).first().download(TMP_DIRECTORY, video_path)
     player_command = VIDEO_PLAYER_COMMAND.split(' ') + [video_path]
     subprocess.run(player_command)
 
