@@ -44,11 +44,16 @@ def play_video(video_id):
     subprocess.run(player_command)
 
 
+def shuffle(_list):
+    return sorted(_list, key=lambda k: random.random())
+
+
 def main():
     arguments = docopt.docopt(__doc__)
     video_ids = search_video(arguments['<query>'])
     if arguments['--random']:
-        for video_id in random.shuffle(video_ids):
+        random.shuffle(video_ids)
+        for video_id in shuffle(video_ids):
             play_video(video_id)
     else:
         play_video(video_ids[0])
